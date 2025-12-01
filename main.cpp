@@ -5,18 +5,16 @@ struct p_t
   int x, y;
 };
 
+struct frame_t{
+  p_t left_bot;
+  p_t right_top;
+};
+
 struct IDraw 
 {
   virtual p_t begin() const = 0;
   virtual p_t next(p_t) const = 0;
 };
-
-size_t count(IDraw& d)
-{
-  size_t k = 0;
-  p_t p = d.begin();
-
-}
 
 namespace top{
   bool operator==(p_t a, p_t b)
@@ -44,6 +42,13 @@ namespace top{
   void print_canvas(const char* cnv, frame_t fr);
 }
 
+void top::make_f(IDraw** b, size_t k)
+{
+  b[0] = new dot(0, 0);
+  b[1] = new dot(9, 11);
+  b[2] = new dot(-11, -7);
+}
+
 top::dot::dot(int x, int y):
   IDraw(), o{x, y}
 {}
@@ -56,11 +61,6 @@ p_t top::dot::next(p_t) const {
   return begin();
 }
 
-struct frame_t{
-  p_t left_bot;
-  p_t right_top;
-};
-
 int main()
 {
   using namespace top;
@@ -68,6 +68,7 @@ int main()
   p_t* p = nullptr;
   size_t s = 0;
   int err = 0;
+  char* cnv = nullptr;
   try 
   {
     make_f(f, 3);
@@ -76,12 +77,15 @@ int main()
       get_points(f[i], &p, s);
     }
     frame_t fr = build_frame(*p, s);
-    cnv = build_canvas();
-    paint_canvas(cnv, fr, p, s, '#');
-    print_canvas(cnv, fr);
   }
   catch(...)
   {
     err = 1;
   }
+  delete f[0];
+  delete f[1];
+  delete f[2];
+  delete [] p;
+  delete [] cnv;
+  return err;
 }
