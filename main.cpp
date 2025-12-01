@@ -5,8 +5,8 @@ struct p_t{
 };
 
 struct IDraw {
-  virtual p_t begin() = 0;
-  virtual p_t next(p_t) = 0;
+  virtual p_t begin() const = 0;
+  virtual p_t next(p_t) const = 0;
 };
 
 size_t count(IDraw& d)
@@ -25,10 +25,28 @@ namespace top{
   {
     return !(a == b);
   }
+
+  struct dot: IDraw{
+    p_t begin() const override;
+    p_t next(p_t) const override;
+    p_t o;
+    dot(int x, int y);
+  };
+}
+
+top::dot::dot(int x, int y):
+  IDraw(), o{x, y}
+{}
+
+p_t top::dot::begin() const {
+  return o;
+}
+
+p_t top::dot::next(p_t) const {
+  return begin();
 }
 
 int main()
 {
   using namespace top;
 }
- 
