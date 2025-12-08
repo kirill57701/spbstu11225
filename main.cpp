@@ -18,27 +18,14 @@ namespace topit {
     p_t next(p_t) const override;
     p_t d;
   };
-  // Домашнее задание:
-  // - Добавить ещё 2-3 фигуры:
-  //   - Вертикальный отрезок
-  //   - Горизонтальный отрезок
-  //   - Диагональ под 45 заданной длины
-  //   - Придумать свою фигуру
-
-  // расширять заданный массив точками из очередной фигуры
-  // - extend...
   size_t points(const IDraw& d, p_t** pts, size_t s);
 
-  // найти минимум и максимум по каждой координате среди точек и сформировать фрейм
   f_t frame(const p_t* pts, size_t s);
 
-  // построить полотно (из фрейма получить количество столбцов и колонок)
   char * canvas(f_t fr, char fill);
 
-  // координаты точки перевести в координаты в двумерном массиве
   void paint(char* cnv, f_t fr, p_t p, char fill);
 
-  // вывод двумперного массива на основе размеров, определяемых фреймом
   void flush(std::ostream& os, const char* cnv, f_t fr);
 }
 
@@ -50,7 +37,6 @@ void extend(topit::p_t** pts, size_t s, topit::p_t p)
   {
     res[i] = (*pts)[i];
   }
-  topit::p_t p = res.begin();
   res[s] = p;
   delete[] * pts;
   *pts = res;
@@ -58,7 +44,7 @@ void extend(topit::p_t** pts, size_t s, topit::p_t p)
 
 size_t topit::points(const IDraw& d, topit::p_t** pts, size_t s)
 {
-  topit::p_t = d.begin();
+  topit::p_t p = d.begin();
   extend(pts, s, p);
   size_t delta = 1;
   while (d.next(p) != d.begin())
@@ -70,7 +56,7 @@ size_t topit::points(const IDraw& d, topit::p_t** pts, size_t s)
   return delta;
 }
 
-top::f_t top::frame(const p_t* pts, size_t s)
+topit::f_t topit::frame(const p_t* pts, size_t s)
 {
   if (!s)
   {
@@ -114,7 +100,7 @@ void topit::paint(char* cns, f_t fr, p_t p, char fill)
 {
   int dx = p.x - fr.aa.x;
   int dy = fr.bb.y - p.y;
-  cnv[dy*cols(fr) + dx] = fill;
+  cns[dy*cols(fr) + dx] = fill;
 }
 
 void topit::flush(std::ostream& os, const char* cnv, f_t fr)
