@@ -16,6 +16,26 @@ struct IDraw
   virtual p_t next(p_t) const = 0;
 };
 
+struct vertical_segment
+{
+  p_t u, d;
+};
+
+struct horizontal_segment
+{
+  p_t l, r;
+};
+
+struct diagonal
+{
+  p_t ld, ru;
+};
+
+struct trapeze
+{
+  p_t lu, ld, ru, rd;
+};
+
 namespace top{
   bool operator==(p_t a, p_t b)
   {
