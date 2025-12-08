@@ -10,7 +10,7 @@ struct frame_t{
   p_t right_top;
 };
 
-struct IDraw 
+struct IDraw
 {
   virtual p_t begin() const = 0;
   virtual p_t next(p_t) const = 0;
@@ -81,6 +81,35 @@ p_t top::dot::next(p_t) const {
   return begin();
 }
 
+/**/
+void extend(top::p_t** pts, size_t s, p_t p)
+{
+  size_t upd_s = s + 1;
+  top::p_t* res = new p_t[upd_s];
+  for (size_t i = 0; i < s; ++i)
+  {
+    res[i] = (*pts)[i];
+  }
+  p_t p = d.begin();
+  res[s] = p;
+  delete[] * pts;
+  *pts = res;
+}
+
+size_t top::points(const IDraw& d, p_t** pts, size_t s)
+{
+  p_t = d.begin();
+  extend(pts, s, p);
+  size_t delta = 1;
+  while (d.next(p) != d.begin())
+  {
+    p = d.next(p);
+    extend(pts, s + delta, p);
+    ++delta;
+  }
+  return delta;
+}
+
 int main()
 {
   using namespace top;
@@ -89,7 +118,7 @@ int main()
   size_t s = 0;
   int err = 0;
   char* cnv = nullptr;
-  try 
+  try
   {
     make_f(f, 3);
     for (size_t i = 0; i < 3; ++i)
