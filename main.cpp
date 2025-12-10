@@ -121,14 +121,23 @@ int main() {
   using topit::f_t;
   using topit::p_t;
   int err = 0;
-  IDraw* shps[3] = {};
+  IDraw* shps[23] = {};
   p_t * pts = nullptr;
   size_t s = 0;
   try {
     shps[0] = new Dot(0, 0);
     shps[1] = new Dot(5, 7);
     shps[2] = new Dot(-5, -2);
-    for (size_t i = 0; i < 3; ++i) {
+    for (int i = 3; i < 12; ++i) {
+      shps[i] = new Dot(i, 5);
+    }
+    for (int i = 12; i < 19; ++i) {
+      shps[i] = new Dot(1, i);
+    }
+    for (int i = 19; i < 23; ++i) {
+      shps[i] = new Dot(i - 19, i - 19);
+    }
+    for (size_t i = 0; i < 23; ++i) {
       s += points(*(shps[i]), &pts, s);
     }
     f_t fr = frame(pts, s);
