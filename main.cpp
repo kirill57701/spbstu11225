@@ -125,13 +125,13 @@ void mk_line(topit::IDraw** shps, int a, int x1, int x2, int y1, int y2, char di
   }
   else if (direction == 'v'){
     int c = y1;
-    for (int i = a; i < a + x2 - x1 + 1; ++i) {
+    for (int i = a; i < a + y2 - y1 + 1; ++i) {
       shps[i] = new topit::Dot(x1, c++);
     }
   }
   else {
     int c1 = x1, c2 = y1;
-    for (int i = a; i < a + x2 - x1 + 1; ++i) {
+    for (int i = a; i < a + std::min(x2 - x1 + 1, y2 - y1 + 1); ++i) {
       shps[i] = new topit::Dot(c1++, c2++);
     }
   }
