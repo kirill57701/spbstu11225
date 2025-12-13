@@ -115,33 +115,50 @@ void topit::flush(std::ostream& os, const char* cnv, f_t fr)
   }
 }
 
+void mk_line(topit::IDraw** shps, int a, int x1, int x2, int y1, int y2, char direction) {
+
+  if (direction == 'h'){
+    int c = x1;
+    for (int i = a; i < a + x2 - x1 + 1; ++i) {
+      shps[i] = new topit::Dot(c++, y1);
+    }
+  }
+  else if (direction == 'v'){
+    int c = y1;
+    for (int i = a; i < a + x2 - x1 + 1; ++i) {
+      shps[i] = new topit::Dot(x1, c++);
+    }
+  }
+  else {
+    int c1 = x1, c2 = y1;
+    for (int i = a; i < a + x2 - x1 + 1; ++i) {
+      shps[i] = new topit::Dot(c1++, c2++);
+    }
+  }
+}
+
 int main() {
   using topit::IDraw;
   using topit::Dot;
   using topit::f_t;
   using topit::p_t;
   int err = 0;
-  IDraw* shps[23] = {};
+  IDraw* shps[13] = {};
   p_t * pts = nullptr;
   size_t s = 0;
   try {
     shps[0] = new Dot(0, 0);
     shps[1] = new Dot(5, 7);
     shps[2] = new Dot(-5, -2);
-    for (int i = 3; i < 12; ++i) {
-      shps[i] = new Dot(i, 5);
-    }
-    for (int i = 12; i < 19; ++i) {
-      shps[i] = new Dot(1, i);
-    }
-    for (int i = 19; i < 23; ++i) {
-      shps[i] = new Dot(i - 19, i - 19);
-    }
-    for (size_t i = 0; i < 23; ++i) {
+    int a, b, c, d;
+    char direction;
+    std::cin >> a >> b >> c >> d >> direction;
+    mk_line(shps, 3, a, b, c, d, direction);
+    for (size_t i = 0; i < 3 + std::max(b - a, d - c); ++i) {
       s += points(*(shps[i]), &pts, s);
     }
     f_t fr = frame(pts, s);
-    char * cnv = canvas(fr, '.');
+    char * cnv = canvas(fr, ' .');
     for (size_t i = 0; i < s; ++i) {
       paint(cnv, fr, pts[i], '#');
     }
