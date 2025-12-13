@@ -137,24 +137,29 @@ void mk_line(topit::IDraw** shps, int a, int x1, int x2, int y1, int y2, char di
   }
 }
 
+void mk_square(topit::IDraw** shps, int start_pos, topit::p_t ld, int width) {
+  mk_line(shps, start_pos, ld.x, ld.x + width - 1, ld.y, ld.y, 'h');
+  mk_line(shps, start_pos + width, ld.x, ld.x, ld.y, ld.y + width - 1, 'v');
+  mk_line(shps, start_pos + width*2, ld.x, ld.x + width - 1, ld.y + width - 1, ld.y, 'h');
+  mk_line(shps, start_pos + width*3, ld.x + width - 1, ld.x, ld.y, ld.y + width - 1, 'v');
+}
+
 int main() {
   using topit::IDraw;
   using topit::Dot;
   using topit::f_t;
   using topit::p_t;
   int err = 0;
-  IDraw* shps[13] = {};
+  IDraw* shps[19] = {};
   p_t * pts = nullptr;
   size_t s = 0;
   try {
     shps[0] = new Dot(0, 0);
     shps[1] = new Dot(5, 7);
     shps[2] = new Dot(-5, -2);
-    int a, b, c, d;
-    char direction;
-    std::cin >> a >> b >> c >> d >> direction;
-    mk_line(shps, 3, a, b, c, d, direction);
-    for (size_t i = 0; i < 3 + std::max(b - a, d - c); ++i) {
+    topit::p_t q{2, 3};
+    mk_square(shps, 3, q, 4);
+    for (size_t i = 0; i < 19; ++i) {
       s += points(*(shps[i]), &pts, s);
     }
     f_t fr = frame(pts, s);
