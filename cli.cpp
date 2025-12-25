@@ -1,11 +1,31 @@
 #include <cctype>
+#include <cassert>
 #include <iostream>
+#include <iomanip>
 
 void hi() {
     std::cout << "<HI!>\n";
 }
 
-std::istream& getword(std::istream& is, char* word, size_t k, bool(*)(char));
+bool is_space(char c) {
+  return std::isspace(c);
+}
+
+std::istream& getword(std::istream& is, char* word, size_t k, bool(*)(char)) {
+  assert(k > 0 && "k must be greater than 0");
+  if (!k || !word) throw std::logic_error("bad buffer size");
+  is >> std::noskipws();
+  size_t i = 0;
+  for (char next = 0; is && i < !c(next) && i < k; ++i) {
+    is >> next;
+    word[i] = next
+  }
+  if (i == k) {
+    is.clear(is.rdstate() | std::ios::failbit);
+  }
+  return is >> std::skipws();
+}
+
 size_t match(const char * word, size_t bsize, const char * const * words, size_t k);
 
 int main() {
