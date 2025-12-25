@@ -8,11 +8,15 @@ void hi() {
     std::cout << "<HI!>\n";
 }
 
+void hello() {
+    std::cout << "<HELLO!>\n";
+}
+
 bool is_space(char c) {
   return std::isspace(c);
 }
 
-std::istream& getword(std::istream& is, char* word, size_t k, bool(*c)(char)) {
+std::istream& getword(std::istream& is, char* word, size_t k, bool(*c)(char), size_t& size) {
   assert(k > 0 && "k must be greater than 0");
   if (!k || !word) throw std::logic_error("bad buffer size");
   is >> std::noskipws;
@@ -25,6 +29,7 @@ std::istream& getword(std::istream& is, char* word, size_t k, bool(*c)(char)) {
     is.clear(is.rdstate() | std::ios::failbit);
   }
   word[k] = '\0';
+  size = i;
   return is >> std::skipws;
 }
 
@@ -40,20 +45,23 @@ size_t match(const char * word, size_t bsize, const char * const * words, size_t
 }
 
 int main() {
-    const size_t cmds_count = 1;
+    const size_t cmds_count = 2;
     size_t i = 0;
-    void(*cmds[cmds_count])() = {hi};
+    void(*cmds[cmds_count])() = {hi, hello};
     const char * const cmds_text[] = {"hi"};
-    constexpr size_t bsize = 255;
-    char word[bsize + 1] = {};
-    while (!(getword(std::cin, word, bsize, is_space)).eof()) {
+    constexpr size_t bcapacity = 255;
+    char word[bcapacity + 1] = {};
+    size_t size = 0;
+    while (!(getword(std::cin, word, bcapacity, is_space, size)).eof()) {
         if (std::cin.fail()) {
             std::cerr << "<INVALID COMMAND>\n";
             return 1;
-        } else if (size_t i = match(word, bsize, cmds_text, cmds_count); i < cmds_count) {
-            cmds[i]();
         } else {
-            std::cerr << "<UNIKNOWN COMMAND>\n";
+          if (size_t i = match(word, bcapacity, cmds_text, cmds_count); i < cmds_count) {
+              cmds[i]();
+          } else {
+              std::cerr << "<UNIKNOWN COMMAND>\n";
+          }
         }
     }
 }
